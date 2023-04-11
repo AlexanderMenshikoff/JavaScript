@@ -1,6 +1,10 @@
-const object = document.querySelector('.object')
+// HW#1
 
-const obj = {
+
+
+const header = document.querySelector('.header')
+
+const person = {
     fullName: 'Alexander',
     age: 21,
     infoAboutLivingPlace: {
@@ -12,17 +16,17 @@ const obj = {
     },
     hasCats: true,
     hobbies: ['programming', 'mma', 'cinematography'],
-    greeting: () => {return `hey my name is ${this.fullName}`}
+    greeting: function (){return `hey my name is ${this.fullName}`}
 }
 
-const objCopy = {...obj}
- objCopy.occupation = {
+const personCopy = {...person}
+ personCopy.occupation = {
     metier: 'student',
     salary: null,
     uniStartingYear: 2020,
     uniEndingYear: 2024
  }
 
- console.log(objCopy)
+ console.log(personCopy)
 
-object.innerHTML = `I am a ${objCopy.occupation.metier} who's salary is ${objCopy.occupation.salary}. I started uni in ${objCopy.occupation.uniStartingYear} and will end it in ${objCopy.occupation.uniEndingYear}.` 
+header.innerHTML = `I am a ${personCopy.occupation.metier} who's salary is ${personCopy.occupation.salary}. I started uni in ${personCopy.occupation.uniStartingYear} and will end it in ${personCopy.occupation.uniEndingYear}.` 
