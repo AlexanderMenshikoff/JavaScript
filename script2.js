@@ -1,6 +1,6 @@
 // HW#2
 
-let movieArr = [
+const movieArr = [
   {
     id: 00001,
     title: "127 hours",
