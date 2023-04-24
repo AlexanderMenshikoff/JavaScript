@@ -32,19 +32,17 @@ function getWordRus(number, wordArr) {
 }
 
 function getWordEng(num, wordArr) {
-  for (let i = 0; i < wordArr.length; i++) {
-    if (num === 1) {
-      return `${num} ${wordArr[0]}`;
-    } else {
-      return `${num} ${wordArr[1]}`;
-    }
+  if (num === 1) {
+    return `${num} ${wordArr[0]}`;
+  } else {
+    return `${num} ${wordArr[1]}`;
   }
 }
 
 console.log(getWordRus(110, ["фильм", "фильма", "фильмов"]));
 console.log(getWordEng(1, ["movie", "movies"]));
 
-let movieArr = [
+const movieArr = [
   {
     id: 00001,
     title: "127 hours",
@@ -138,32 +136,25 @@ let movieArr = [
   },
 ];
 
-// let averageRatingFunction = function averageRating() {
-//   let num = 0;
-//   movieArr.forEach((object) => {
-//     object.details.reviews.forEach((el) => {
-//       num += el.score;
-//     });
-//     return (num / object.details.reviews.length).toFixed(1);
-//   });
-// };
-
-// averageRatingFunction();
-
-function filterShows(arrShows, year, title, rating) {
+function filterShows(arrShows, dataObj) {
   let filteredShows = arrShows.filter((obj) => {
     let num = 0;
-    obj.details.reviews.forEach((el) => (el.score += num));
+    obj.details.reviews.forEach((el) => {
+      num += el.score;
+    });
+    num = (num / obj.details.reviews.length).toFixed(1);
+    console.log(num);
+
     return (
-      year <= obj.year &&
-      obj.title.toLowerCase().includes(title) &&
-      num <= rating
+      dataObj.year <= obj.year &&
+      obj.title.toLowerCase().includes(dataObj.title.toLowerCase()) &&
+      num <= dataObj.rating
     );
   });
   return filteredShows;
 }
 
-const data = { year: 2017, title: "the", rating: 8 };
+const data = { year: 2008, title: "pi", rating: 8 };
 console.log(filterShows(movieArr, data));
 
 let question = prompt("Введите число от 0 до 100");
