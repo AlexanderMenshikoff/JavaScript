@@ -12,22 +12,26 @@ function isPalindrome(word) {
   }
 }
 
-console.log(isPalindrome("tenet"));
+function isPalindromeShorthand(word) {
+  return word.toLowerCase() === word.split("").reverse().join("").toLowerCase()
+    ? true
+    : false;
+}
 
-function getWordRus(number, wordArr) {
-  for (let i = 0; i < wordArr.length; i++) {
-    if (number === 1) {
-      return `${number} ${wordArr[0]}`;
-    }
-    if (number >= 2 && number <= 4) {
-      return `${number} ${wordArr[1]}`;
-    }
-    if (number >= 5 && number <= 20) {
-      return `${number} ${wordArr[2]}`;
-    }
-    if (number % 10 === 0) {
-      return `${number} ${wordArr[2]}`;
-    }
+console.log(isPalindrome("tenet"));
+console.log(isPalindromeShorthand("Tenet"));
+
+function getWordRus(num, wordArr) {
+  if (num.endsWith("1") && !num.endsWith("11")) {
+    return `${num} ${wordArr[0]}`;
+  }
+  if (
+    (num.endsWith("2") || num.endsWith("3") || num.endsWith("4")) &&
+    !(num.endsWith("12") || num.endsWith("13") || num.endsWith("14"))
+  ) {
+    return `${num} ${wordArr[1]}`;
+  } else {
+    return `${num} ${wordArr[2]}`;
   }
 }
 
@@ -143,8 +147,6 @@ function filterShows(arrShows, dataObj) {
       num += el.score;
     });
     num = (num / obj.details.reviews.length).toFixed(1);
-    console.log(num);
-
     return (
       dataObj.year <= obj.year &&
       obj.title.toLowerCase().includes(dataObj.title.toLowerCase()) &&
