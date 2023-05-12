@@ -1,4 +1,7 @@
 const contentBlock = document.querySelector(".content-block");
+const rateWindow = document.querySelector(".rate__window");
+const rateInput = document.querySelector(".rate-input");
+const rateBtn = document.querySelector(".rate-btn");
 
 const movies = [
   {
@@ -106,16 +109,153 @@ const movies = [
 
 const moviesArr = [...movies];
 
-moviesArr.forEach((el) => {
-  el.actors.forEach((el) => {
-    el.age = new Date().getFullYear() - el.birthyear;
+moviesArr.forEach((movie) => {
+  movie.actors.forEach((actor) => {
+    actor.age = new Date().getFullYear() - actor.birthyear;
   });
 });
 
 console.log(movies);
 
-// function moviesDisplay() {
-//   contentBlock.innerHTML = `
-//   <div
-//   `
-// }
+const getImage = (person) => {
+  const value = person.toLowerCase();
+
+  switch (value) {
+    case "chris pratt":
+      return "pratt.jpg";
+    case "bradley cooper":
+      return "cooper.jpg";
+    case "zoe saldana":
+      return "saldana.jpg";
+    case "gerard butler":
+      return "butler.jpg";
+    case "mike colter":
+      return "cotler.jpg";
+    case "lilly krug":
+      return "krug.jpg";
+    case "julianne moore":
+      return "moore.jpg";
+    case "sebastian stan":
+      return "stan.jpg";
+    case "briana middleton":
+      return "middleton.jpg";
+    case "guardians of the galaxy vol. 3":
+      return "1.jpg";
+    case "plane":
+      return "2.jpg";
+    case "sharper":
+      return "3.jpg";
+    default:
+      return "cooper.jpg";
+  }
+};
+
+function getMovies(id) {
+  moviesArr.filter((movie) => {
+    if (movie.id === id) {
+      contentBlock.innerHTML = `
+              <div class="movie-essentials__container">
+                        <h2 class="content-block__movie-name">${movie.title}</h2>
+                        <div class="content-block__movie-rating_container">
+                          <div class="content-block__movie-rating_text">Rating:</div>
+                          <div class="content-block__movie-rating_number">${movie.rating}</div>
+                          <div class="content-block__movie-rating_of10">/ 10</div>
+                        </div>
+                      </div>
+                      <div class="movie-main__content_container">
+                        <img class="movie-main__content_poster">
+                        <div class="movie__description_container">
+                          <div class="movie__description">${movie.description}</div>
+                          <div class="movie__genre_container"></div>
+                          <p class="actors-cast__text">Cast:</p>
+                          <div class="movie-cast__container">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <h3 class="similar-movies__text">Similar movies</h3>
+                      <div class="similar-movies__container"></div>
+              `;
+
+      let movieMainContentPoster = document.querySelector(
+        ".movie-main__content_poster"
+      );
+      movieMainContentPoster.src = `./images/${getImage(movie.title)}`;
+
+      movie.genre.forEach((genre) => {
+        let movieGenreContainer = document.querySelector(
+          ".movie__genre_container"
+        );
+        let movieGenre = document.createElement("div");
+
+        movieGenre.className = "movie__genre";
+        movieGenreContainer.appendChild(movieGenre);
+
+        movieGenre.innerText = genre;
+      });
+
+      movie.actors.forEach((actor) => {
+        let movieCastContainer = document.querySelector(
+          ".movie-cast__container"
+        );
+        let movieActorContainer = document.createElement("div");
+        let movieActorName = document.createElement("p");
+        let movieActorPic = document.createElement("img");
+
+        movieActorContainer.className = "movie-actor__container";
+        movieActorName.className = "movie-actor__name";
+        movieActorPic.className = "movie-actor__pic";
+
+        movieCastContainer.appendChild(movieActorContainer);
+        movieActorContainer.appendChild(movieActorPic);
+        movieActorContainer.appendChild(movieActorName);
+
+        movieActorName.innerText = actor.name;
+        movieActorPic.src = `./images/actors/${getImage(actor.name)}`;
+      });
+
+      movie.similar.forEach((sim) => {
+        let similarMoviesContainer = document.querySelector(
+          ".similar-movies__container"
+        );
+        let similarMoviePic = document.createElement("img");
+
+        similarMoviePic.className = "similar-movie__pic";
+        similarMoviesContainer.appendChild(similarMoviePic);
+
+        similarMoviePic.src = `./images/${getImage(sim)}`;
+      });
+
+      const contentBlockMovieRatingNumber = document.querySelector(
+        ".content-block__movie-rating_number"
+      );
+
+      const getRatingColor = () => {
+        if (contentBlockMovieRatingNumber.innerText <= 5) {
+          contentBlockMovieRatingNumber.style.color = "red";
+        } else if (contentBlockMovieRatingNumber.innerText <= 8) {
+          contentBlockMovieRatingNumber.style.color = "yellow";
+        } else if (contentBlockMovieRatingNumber.innerText <= 10) {
+          contentBlockMovieRatingNumber.style.color = "green";
+        }
+      };
+
+      contentBlockMovieRatingNumber.addEventListener("mouseover", () => {
+        rateWindow.classList.toggle("rate__window-visible");
+      });
+
+      getRatingColor();
+
+      rateBtn.addEventListener("click", (e) => {
+        contentBlockMovieRatingNumber.innerText = `${
+          (+rateInput.value + movie.rating) / 2
+        } `;
+        rateInput.value = "";
+        e.preventDefault();
+        getRatingColor();
+      });
+    }
+  });
+}
+
+getMovies(2);
