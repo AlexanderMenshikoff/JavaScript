@@ -249,12 +249,19 @@ function getMovies(id) {
       getRatingColor();
 
       rateBtn.addEventListener("click", (e) => {
-        contentBlockMovieRatingNumber.innerText = `${
-          (+rateInput.value + movie.rating) / 2
-        } `;
-        rateInput.value = "";
-        e.preventDefault();
-        getRatingColor();
+        if (+rateInput.value > 10 || +rateInput.value.length > 2) {
+          alert("Оценка должна быть от 0 до 10!");
+          e.preventDefault();
+          rateInput.value = "";
+        } else {
+          contentBlockMovieRatingNumber.innerText = `${
+            (+rateInput.value + movie.rating) / 2
+          } `;
+          rateInput.value = "";
+
+          e.preventDefault();
+          getRatingColor();
+        }
       });
     }
   });
