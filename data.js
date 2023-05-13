@@ -82,32 +82,32 @@ const movies = [
     similar: ["Guardians of the Galaxy Vol. 3", "Plane"],
     rating: 3.3,
   },
-
-  // [
-  //   {
-  //     name: "Thriller",
-  //     movies: ["Plane", "Sharper"],
-  //   },
-  //   {
-  //     name: "Adventure",
-  //     movies: ["Guardians of the Galaxy Vol. 3", "Plane"],
-  //   },
-  //   {
-  //     name: "Drama",
-  //     movies: ["Guardians of the Galaxy Vol. 3", "Sharper"],
-  //   },
-  //   {
-  //     name: "Crime",
-  //     movies: ["Plane", "Sharper"],
-  //   },
-  //   {
-  //     name: "Comedy",
-  //     movies: ["Guardians of the Galaxy Vol. 3"],
-  //   },
-  // ],
 ];
 
-const moviesArr = [...movies];
+const movieGenresArr = [
+  {
+    name: "Thriller",
+    movies: ["Plane", "Sharper"],
+  },
+  {
+    name: "Adventure",
+    movies: ["Guardians of the Galaxy Vol. 3", "Plane"],
+  },
+  {
+    name: "Drama",
+    movies: ["Guardians of the Galaxy Vol. 3", "Sharper"],
+  },
+  {
+    name: "Crime",
+    movies: ["Plane", "Sharper"],
+  },
+  {
+    name: "Comedy",
+    movies: ["Guardians of the Galaxy Vol. 3"],
+  },
+];
+
+const moviesArr = JSON.parse(JSON.stringify(movies));
 
 moviesArr.forEach((movie) => {
   movie.actors.forEach((actor) => {
@@ -115,7 +115,9 @@ moviesArr.forEach((movie) => {
   });
 });
 
-console.log(movies);
+movieGenresArr.forEach((el) => moviesArr.push(el));
+
+console.log(moviesArr);
 
 const getImage = (person) => {
   const value = person.toLowerCase();
@@ -259,3 +261,41 @@ function getMovies(id) {
 }
 
 getMovies(2);
+
+// const arr = [
+//   {
+//     actors: [
+//       {
+//         name: "Alex",
+//         sex: "male",
+//       },
+//     ],
+//   },
+//   {
+//     actors: [
+//       {
+//         name: "Alex",
+//         sex: "male",
+//       },
+//     ],
+//   },
+//   {
+//     actors: [
+//       {
+//         name: "Alex",
+//         sex: "male",
+//       },
+//     ],
+//   },
+// ];
+
+// const arrClone = JSON.parse(JSON.stringify(arr));
+
+// arrClone.forEach((el) => {
+//   el.actors.forEach((elem) => {
+//     elem.age = 10;
+//   });
+// });
+
+// console.log(arr);
+// console.log(arrClone);
