@@ -190,6 +190,12 @@ body {
         font-weight: 500;
         font-size: 12px;
         line-height: 15px;
+        color: #8b8b8b;
+    }
+    &_movie-name {
+        color: #383838;
+        font-size: 14px;
+        font-weight: 800;
     }
 }
 
@@ -202,7 +208,7 @@ body {
     height: 24px;
     background: #ffffff;
     border-style: none;
-    margin-top: 35px;
+    margin-top: 5px;
 }
 
 .rate-input::-webkit-input-placeholder {
