@@ -2,6 +2,7 @@ const contentBlock = document.querySelector(".content-block");
 const rateWindow = document.querySelector(".rate__window");
 const rateInput = document.querySelector(".rate-input");
 const rateBtn = document.querySelector(".rate-btn");
+const rateWindowMovieName = document.querySelector(".rate__window_movie-name");
 
 const movies = [
   {
@@ -179,6 +180,8 @@ function getMovies(id) {
                       <div class="similar-movies__container"></div>
               `;
 
+      rateWindowMovieName.innerText = movie.title;
+
       let movieMainContentPoster = document.querySelector(
         ".movie-main__content_poster"
       );
@@ -259,6 +262,7 @@ function getMovies(id) {
           } `;
           rateInput.value = "";
 
+          rateWindow.classList.toggle("rate__window-visible");
           e.preventDefault();
           getRatingColor();
         }
