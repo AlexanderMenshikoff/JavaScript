@@ -116,36 +116,53 @@ const moviesArr = movies.map((movie) => {
   return { ...movie, actors };
 });
 
-const getImage = (person) => {
+const getImageActors = (person) => {
   const value = person.toLowerCase();
+
+  const [, lastName] = value.split(" ");
+
+  const image = `${lastName}.jpg`;
 
   switch (value) {
     case "chris pratt":
-      return "pratt.jpg";
+      return image;
     case "bradley cooper":
-      return "cooper.jpg";
+      return image;
     case "zoe saldana":
-      return "saldana.jpg";
+      return image;
     case "gerard butler":
-      return "butler.jpg";
+      return image;
     case "mike colter":
-      return "cotler.jpg";
+      return image;
     case "lilly krug":
-      return "krug.jpg";
+      return image;
     case "julianne moore":
-      return "moore.jpg";
+      return image;
     case "sebastian stan":
-      return "stan.jpg";
+      return image;
     case "briana middleton":
-      return "middleton.jpg";
-    case "guardians of the galaxy vol. 3":
-      return "1.jpg";
-    case "plane":
-      return "2.jpg";
-    case "sharper":
-      return "3.jpg";
+      return image;
     default:
       return "cooper.jpg";
+  }
+};
+
+const getImageMovies = (movie) => {
+  const value = movie.toLowerCase();
+
+  const [firstTitle] = value.split(" ");
+
+  const image = `${firstTitle}.jpg`;
+
+  switch (value) {
+    case "guardians of the galaxy vol. 3":
+      return image;
+    case "plane":
+      return image;
+    case "sharper":
+      return image;
+    default:
+      return "guardians.jpg";
   }
 };
 
@@ -217,7 +234,7 @@ const getMovieActor = (id) => {
         movieActorContainer.appendChild(movieActorName);
 
         movieActorName.innerText = actor.name;
-        movieActorPic.src = `./images/actors/${getImage(actor.name)}`;
+        movieActorPic.src = `./images/actors/${getImageActors(actor.name)}`;
       });
     }
   });
@@ -235,7 +252,7 @@ const getSimilarMovie = (id) => {
         similarMoviePic.className = "similar-movie__pic";
         similarMoviesContainer.appendChild(similarMoviePic);
 
-        similarMoviePic.src = `./images/${getImage(sim)}`;
+        similarMoviePic.src = `./images/${getImageMovies(sim)}`;
       });
     }
   });
@@ -309,7 +326,7 @@ function getMovies(id) {
       let movieMainContentPoster = document.querySelector(
         ".movie-main__content_poster"
       );
-      movieMainContentPoster.src = `./images/${getImage(movie.title)}`;
+      movieMainContentPoster.src = `./images/${getImageMovies(movie.title)}`;
 
       getMovieGenre(id);
 
@@ -326,7 +343,7 @@ function getMovies(id) {
   });
 }
 
-getMovies(3);
+getMovies(1);
 
 console.log(makeMoviesGenreArr());
 
