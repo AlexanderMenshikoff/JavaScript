@@ -85,28 +85,26 @@ const movies = [
   },
 ];
 
-// const movieGenresArr = [
-//   {
-//     name: "Thriller",
-//     movies: ["Plane", "Sharper"],
-//   },
-//   {
-//     name: "Adventure",
-//     movies: ["Guardians of the Galaxy Vol. 3", "Plane"],
-//   },
-//   {
-//     name: "Drama",
-//     movies: ["Guardians of the Galaxy Vol. 3", "Sharper"],
-//   },
-//   {
-//     name: "Crime",
-//     movies: ["Plane", "Sharper"],
-//   },
-//   {
-//     name: "Comedy",
-//     movies: ["Guardians of the Galaxy Vol. 3"],
-//   },
-// ];
+const makeMoviesGenreArr = () => {
+  let arr = [];
+  movies.map((el) => {
+    el.genre.map((elem) => arr.push(elem));
+  });
+  const unitedGenresArray = arr.filter(
+    (item, index) => arr.indexOf(item) === index
+  );
+
+  const newGenreObj = unitedGenresArray.map((genreEl) => {
+    return {
+      name: genreEl,
+      movies: movies
+        .filter((movie) => movie.genre.includes(genreEl))
+        .map((movie) => movie.title),
+    };
+  });
+
+  return newGenreObj;
+};
 
 const moviesArr = movies.map((movie) => {
   const actors = movie.actors.map((actor) => {
@@ -117,10 +115,6 @@ const moviesArr = movies.map((movie) => {
   });
   return { ...movie, actors };
 });
-
-console.log("old array", movies);
-
-console.log("new array", moviesArr);
 
 const getImage = (person) => {
   const value = person.toLowerCase();
@@ -333,3 +327,9 @@ function getMovies(id) {
 }
 
 getMovies(3);
+
+console.log(makeMoviesGenreArr());
+
+console.log("old array", movies);
+
+console.log("new array", moviesArr);
