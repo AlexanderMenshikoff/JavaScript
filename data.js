@@ -85,40 +85,42 @@ const movies = [
   },
 ];
 
-const movieGenresArr = [
-  {
-    name: "Thriller",
-    movies: ["Plane", "Sharper"],
-  },
-  {
-    name: "Adventure",
-    movies: ["Guardians of the Galaxy Vol. 3", "Plane"],
-  },
-  {
-    name: "Drama",
-    movies: ["Guardians of the Galaxy Vol. 3", "Sharper"],
-  },
-  {
-    name: "Crime",
-    movies: ["Plane", "Sharper"],
-  },
-  {
-    name: "Comedy",
-    movies: ["Guardians of the Galaxy Vol. 3"],
-  },
-];
+// const movieGenresArr = [
+//   {
+//     name: "Thriller",
+//     movies: ["Plane", "Sharper"],
+//   },
+//   {
+//     name: "Adventure",
+//     movies: ["Guardians of the Galaxy Vol. 3", "Plane"],
+//   },
+//   {
+//     name: "Drama",
+//     movies: ["Guardians of the Galaxy Vol. 3", "Sharper"],
+//   },
+//   {
+//     name: "Crime",
+//     movies: ["Plane", "Sharper"],
+//   },
+//   {
+//     name: "Comedy",
+//     movies: ["Guardians of the Galaxy Vol. 3"],
+//   },
+// ];
 
-const moviesArr = JSON.parse(JSON.stringify(movies));
-
-moviesArr.forEach((movie) => {
-  movie.actors.forEach((actor) => {
-    actor.age = new Date().getFullYear() - actor.birthyear;
+const moviesArr = movies.map((movie) => {
+  const actors = movie.actors.map((actor) => {
+    return {
+      ...actor,
+      age: actor.birthyear ? new Date().getFullYear() - actor.birthyear : null,
+    };
   });
+  return { ...movie, actors };
 });
 
-movieGenresArr.forEach((el) => moviesArr.push(el));
+console.log("old array", movies);
 
-console.log(moviesArr);
+console.log("new array", moviesArr);
 
 const getImage = (person) => {
   const value = person.toLowerCase();
@@ -153,8 +155,8 @@ const getImage = (person) => {
   }
 };
 
-function getMovies(id) {
-  moviesArr.filter((movie) => {
+const getContentBlock = (id) => {
+  moviesArr.forEach((movie) => {
     if (movie.id === id) {
       contentBlock.innerHTML = `
               <div class="movie-essentials__container">
@@ -179,14 +181,13 @@ function getMovies(id) {
                       <h3 class="similar-movies__text">Similar movies</h3>
                       <div class="similar-movies__container"></div>
               `;
+    }
+  });
+};
 
-      rateWindowMovieName.innerText = movie.title;
-
-      let movieMainContentPoster = document.querySelector(
-        ".movie-main__content_poster"
-      );
-      movieMainContentPoster.src = `./images/${getImage(movie.title)}`;
-
+const getMovieGenre = (id) => {
+  moviesArr.forEach((movie) => {
+    if (movie.id === id) {
       movie.genre.forEach((genre) => {
         let movieGenreContainer = document.querySelector(
           ".movie__genre_container"
@@ -198,7 +199,13 @@ function getMovies(id) {
 
         movieGenre.innerText = genre;
       });
+    }
+  });
+};
 
+const getMovieActor = (id) => {
+  moviesArr.forEach((movie) => {
+    if (movie.id === id) {
       movie.actors.forEach((actor) => {
         let movieCastContainer = document.querySelector(
           ".movie-cast__container"
@@ -218,7 +225,13 @@ function getMovies(id) {
         movieActorName.innerText = actor.name;
         movieActorPic.src = `./images/actors/${getImage(actor.name)}`;
       });
+    }
+  });
+};
 
+const getSimilarMovie = (id) => {
+  moviesArr.forEach((movie) => {
+    if (movie.id === id) {
       movie.similar.forEach((sim) => {
         let similarMoviesContainer = document.querySelector(
           ".similar-movies__container"
@@ -230,26 +243,16 @@ function getMovies(id) {
 
         similarMoviePic.src = `./images/${getImage(sim)}`;
       });
+    }
+  });
+};
 
+const getNewRating = (id) => {
+  moviesArr.forEach((movie) => {
+    if (movie.id === id) {
       const contentBlockMovieRatingNumber = document.querySelector(
         ".content-block__movie-rating_number"
       );
-
-      const getRatingColor = () => {
-        if (contentBlockMovieRatingNumber.innerText <= 5) {
-          contentBlockMovieRatingNumber.style.color = "red";
-        } else if (contentBlockMovieRatingNumber.innerText <= 8) {
-          contentBlockMovieRatingNumber.style.color = "yellow";
-        } else if (contentBlockMovieRatingNumber.innerText <= 10) {
-          contentBlockMovieRatingNumber.style.color = "green";
-        }
-      };
-
-      contentBlockMovieRatingNumber.addEventListener("mouseover", () => {
-        rateWindow.classList.toggle("rate__window-visible");
-      });
-
-      getRatingColor();
 
       rateBtn.addEventListener("click", (e) => {
         if (+rateInput.value > 10 || +rateInput.value.length > 2) {
@@ -260,6 +263,7 @@ function getMovies(id) {
           contentBlockMovieRatingNumber.innerText = `${
             (+rateInput.value + movie.rating) / 2
           } `;
+
           rateInput.value = "";
 
           rateWindow.classList.toggle("rate__window-visible");
@@ -269,6 +273,63 @@ function getMovies(id) {
       });
     }
   });
+};
+
+const getRatingColor = () => {
+  const contentBlockMovieRatingNumber = document.querySelector(
+    ".content-block__movie-rating_number"
+  );
+  const contentBlockMovieRatingNumberInner =
+    contentBlockMovieRatingNumber.innerText;
+
+  let contentBlockMovieRatingNumberStyle = "";
+
+  if (contentBlockMovieRatingNumberInner <= 5) {
+    contentBlockMovieRatingNumberStyle = "red";
+  } else if (contentBlockMovieRatingNumberInner <= 8) {
+    contentBlockMovieRatingNumberStyle = "yellow";
+  } else if (contentBlockMovieRatingNumberInner <= 10) {
+    contentBlockMovieRatingNumberStyle = "green";
+  }
+
+  contentBlockMovieRatingNumber.style.color =
+    contentBlockMovieRatingNumberStyle;
+};
+
+const appearRatingWindow = () => {
+  const contentBlockMovieRatingNumber = document.querySelector(
+    ".content-block__movie-rating_number"
+  );
+  contentBlockMovieRatingNumber.addEventListener("mouseover", () => {
+    rateWindow.classList.toggle("rate__window-visible");
+  });
+};
+
+function getMovies(id) {
+  moviesArr.forEach((movie) => {
+    if (movie.id === id) {
+      getContentBlock(id);
+
+      rateWindowMovieName.innerText = movie.title;
+
+      let movieMainContentPoster = document.querySelector(
+        ".movie-main__content_poster"
+      );
+      movieMainContentPoster.src = `./images/${getImage(movie.title)}`;
+
+      getMovieGenre(id);
+
+      getMovieActor(id);
+
+      getSimilarMovie(id);
+
+      getRatingColor(id);
+
+      appearRatingWindow();
+
+      getNewRating(id);
+    }
+  });
 }
 
-getMovies(2);
+getMovies(3);
